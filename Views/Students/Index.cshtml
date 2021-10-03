@@ -1,0 +1,64 @@
+﻿@model  PagedList.IPagedList<School_Manager.Models.Student>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@*@model PagedList.IPagedList<Student>*@
+@{ ViewBag.Title = "Index"; }
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+@using (Html.BeginForm())
+{
+<p>
+    Name or Class: @Html.TextBox("SearchString")
+    <input type="submit" value="Search" />
+</p>}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+
+        </th>
+        <th>
+            @Html.ActionLink("Age", "Index", new { sortOrder = ViewBag.NameSortParm })
+
+        </th>
+
+        <th>
+            @Html.ActionLink("ClassName", "Index", new { sortOrder = ViewBag.NameSortParm })
+
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Age)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Class.Name)
+    </td>
+    <td>
+
+        <a href="thong-tin-hoc-sinh/@item.Name.Trim().Replace(" ", "-")/@item.ID"> Edit </a>|
+        <a href="bang-diem-hoc-sinh/@item.Name.Trim().Replace(" ", "-")/@item.ID"> Detail </a>|
+
+        
+        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+    </td>
+</tr>
+}
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

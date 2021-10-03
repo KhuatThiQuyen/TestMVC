@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6bc53c2213714ad0b9884e74e6db9a7e" Name="Diagram1">
+        <EntityTypeShape EntityType="managerSchoolModel.Class" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="managerSchoolModel.School" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="managerSchoolModel.Score" Width="1.5" PointX="7.5" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="managerSchoolModel.ScoreType" Width="1.5" PointX="6" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="managerSchoolModel.Student" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="managerSchoolModel.Subject" Width="1.5" PointX="3.375" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="managerSchoolModel.sysdiagram" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <AssociationConnector Association="managerSchoolModel.FK_Class_School" ManuallyRouted="false" />
+        <AssociationConnector Association="managerSchoolModel.FK_Student_Class" ManuallyRouted="false" />
+        <AssociationConnector Association="managerSchoolModel.FK_Score_ScoreType" ManuallyRouted="false" />
+        <AssociationConnector Association="managerSchoolModel.FK_Score_Student" ManuallyRouted="false" />
+        <AssociationConnector Association="managerSchoolModel.FK_Score_Subject" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

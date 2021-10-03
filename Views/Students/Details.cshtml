@@ -1,0 +1,152 @@
+﻿@using School_Manager.Service;
+@model School_Manager.Models.StudentSubjectScore
+
+@{ ViewBag.Title = "Details"; }
+
+
+<h2>Details</h2>
+<!DOCTYPE html>
+<div>
+    <h4>Student</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <table border="1" id="tblStudents" class="table">
+            <style>
+                .form-control {
+                    column-span: all;
+                    color: rebeccapurple;
+                }
+            </style>
+            <thead>
+                <tr>
+                    <th class="col-lg-2">Subject</th>
+                    <th class="col-lg-3">First Score</th>
+                    <th class="col-lg-3">Second Score</th>
+                    <th class="col-lg-3">Third Score</th>
+                    <th class="col-lg-1">Final Score</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+                @foreach (var subjectScore in Model.scoreCalculators)
+                {
+                    //var scoreid = @subjectScore.subject.ID;
+                    
+                    <tr id="@subjectScore.subject.ID-@Model.student.ID">
+                        <td class="col-lg-2">
+                            <span>@subjectScore.subject.Name</span>
+                            @*@Html.EditorFor(m => subjectScore.subject.Name, new { htmlAttributes = new { @class = "form-control" } })*@
+                        </td>
+                        <td>
+                            @foreach (var score in subjectScore.firstScore)
+                            {
+                                
+                                @Html.HiddenFor(m => score.ID);
+                                @*@Html.EditorFor(m => score.ScoreNumber, new { htmlAttributes = new { @class = "form-control" } })*@
+                                @Html.EditorFor(m => score.ScoreNumber, null,
+                               string.Format("Score_{0}", score.ID), new { htmlAttributes = new { @class = "form-control" } })
+
+
+                            }
+                        </td>
+                        <td>
+                            @foreach (var score in subjectScore.secondScore)
+                            {
+                                @Html.HiddenFor(m => score.ID);
+                                @Html.EditorFor(m => score.ScoreNumber, null,
+                               string.Format("Score_{0}", score.ID), new { htmlAttributes = new { @class = "form-control" } })
+                                @*@Html.EditorFor(m => subjectScore.thirdScore,
+                                new { htmlAttributes = new { @class = "form-control", id = string.Format("{0}_{1}_thirdScore", Model.student.ID, subjectScore.subject.ID) } })*@
+
+                            }
+                        </td>
+                        <td>
+                            @foreach (var score in subjectScore.thirdScore)
+                            {
+                                @Html.HiddenFor(m => score.ID);
+                                @Html.EditorFor(m => score.ScoreNumber, null,
+                               string.Format("Score_{0}", score.ID), new { htmlAttributes = new { @class = "form-control" } })
+
+                            }
+                        </td>
+                        <td class="col-lg-1">
+                            <span id="finalSc_@subjectScore.subject.ID">@subjectScore.finalScore</span>
+                        </td>
+                        <td>
+                         
+                           
+                            <button type="button" id="btnUpdate_@subjectScore.subject.ID-@Model.student.ID" class="btn btn-primary" onclick="Update(@subjectScore.subject.ID,@Model.student.ID )">Update</button>
+                        </td>
+                    </tr>
+                }
+
+        </table>
+
+
+        <script>
+
+            function Update(subId, stuId) {
+                if (status == 1) {
+                 
+                }
+                console.log(subId);
+                console.log(stuId);
+
+                //find tr(stuid-stuid)=>in input
+                var elements = $(`#${subId}-${stuId}`).find(':input');
+                var listScoreInput = [];
+                for (let i = 0; i < elements.length; i++) {
+                    console.log(elements[i].id);
+                    //find Score_. hidden out, button out
+                    if (elements[i].id.includes("Score_")) {
+                        listScoreInput.push(elements[i]);
+                    }
+                }
+
+                var listScoreById = [];
+                for (let i = 0; i < listScoreInput.length; i++) {
+                    console.log(listScoreInput[i].value);
+                    //get score: id_value
+                    listScoreById.push({ ID: listScoreInput[i].id.replace("Score_", ""), ScoreNumber: listScoreInput[i].value })
+                }
+
+
+                $.ajax({
+                    url: "/Students/UpdateScore",
+                    data: JSON.stringify({ listScoreUpdate: listScoreById, studentId: stuId, subjectId: subId }),
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        console.log(result);
+                        if (result.status == "Success") {
+                            console.log(result.finalScore); $(`#finalSc_${subId}`).text(result.finalScore);
+
+                        }
+                        else alert(result);
+
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+
+
+            }
+            @*var ID = @Model.scoreCalculator.ID;*@
+            @*subjectId = @Model.scoreCalculators.subject.ID;*@
+            @*var subjectid = @Model.scoreCalculators.subjectid;*@
+                                    //get score from input
+            //var firstScore = $(`#${studentId}_${subjectId}_firstScore`).val();
+            //var secondScore = $(`#${studentId}_${subjectId}_secondScore`).val();
+            //var thirdScore = $(`#${studentId}_${subjectId}_thirdScore`).val();
+            // then send it by ajax call
+        </script>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index", "Students")
+</p>
+
